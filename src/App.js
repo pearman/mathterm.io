@@ -3,6 +3,8 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import Avatar from 'material-ui/Avatar';
+import Divider from 'material-ui/Divider';
 import Algebrite from 'algebrite';
 import _ from 'lodash';
 
@@ -59,7 +61,17 @@ class App extends Component {
           onLeftIconButtonTouchTap={this.handleToggle}
         />
         <div style={{height: '4em'}} />
-        {this.state.output}
+        {this.state.output.length > 0 ? 
+          this.state.output
+          : <div>
+              <p style={{color: 'rgba(0,0,0,0.3)', textAlign: 'center'}}>
+                Try typing <b>(x+5)(x+4)</b> or <b>factor(x^2 + 9x + 20)</b>
+              </p>
+              <p style={{color: 'rgba(0,0,0,0.3)', textAlign: 'center'}}>
+                Maybe some calculus: <b>integral(x^5)</b> ?
+              </p>
+            </div>
+          }
         <Paper zDepth={1} style={{padding: '1em'}}>
           <TextField
             value={this.state.input}
@@ -74,10 +86,24 @@ class App extends Component {
           open={this.state.sidePanelOpen}
           onRequestChange={(open) => this.setState({sidePanelOpen: open})}
         >
-        <Paper style={{padding: '1em', margin: '1em'}}>
-          <p>Powered by Algebrite and MathJax!</p>
-          <p>Written by Gabe Pearhill</p>
-        </Paper>
+        <div style={{padding: '1em'}}>
+          <div style={{textAlign: 'center'}}>
+            <Avatar src="MathTermLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '20%'}}/>
+            <h3>MathTerm.io</h3>
+            <p>Written by Gabe Pearhill</p>
+            <a className="github-button" href="https://github.com/pearman/mathterm.io" data-icon="octicon-star" data-style="mega" data-count-href="/pearman/mathterm.io/stargazers" data-count-api="/repos/pearman/mathterm.io#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star pearman/mathterm.io on GitHub">Star</a>
+            <br />
+            <a className="github-button" href="https://github.com/pearman/mathterm.io/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/pearman/mathterm.io#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue pearman/mathterm.io on GitHub">Issue</a>
+          </div>
+          <br />
+          <Divider />
+          <br />
+          <div style={{textAlign: 'center'}}>
+            <p>Powered by the following Open Source technologies:</p>
+            <Avatar src="algebriteLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '0%'}}/>
+            <Avatar src="MathJaxLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '0%'}}/>
+          </div>
+        </div>
         </Drawer>
       </div>
     );
