@@ -3,12 +3,16 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
+import Dialog from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton';
+import ActionHelp from 'material-ui/svg-icons/action/help';
+
 import Algebrite from 'algebrite';
 import _ from 'lodash';
 
 import OutputRow from './OutputRow';
+import Help from './Help';
+import SidePanel from './SidePanel';
 
 class App extends Component {
   constructor(props) {
@@ -16,14 +20,17 @@ class App extends Component {
     this.currentId = 0;
     this.state = {
       sidePanelOpen: false,
+      helpOpen: false,
       input: '',
       output: []
     };
   }
 
-  handleToggle = () => this.setState({sidePanelOpen: !this.state.open});
+  handleSidePanelToggle = () => this.setState({sidePanelOpen: !this.state.sidePanelOpen});
 
-  handleClose = () => this.setState({sidePanelOpen: false});
+  handleHelpOpen = () => this.setState({helpOpen: true});
+
+  handleHelpClose = () => this.setState({helpOpen: false});
 
   handleChange = (e) => this.setState({input: e.target.value});
 
@@ -58,7 +65,9 @@ class App extends Component {
         <AppBar
           style={{position: 'fixed', top: '0px'}}
           title="MathTerm"
-          onLeftIconButtonTouchTap={this.handleToggle}
+          onLeftIconButtonTouchTap={this.handleSidePanelToggle}
+          iconElementRight={<IconButton><ActionHelp /></IconButton>}
+          onRightIconButtonTouchTap={this.handleHelpOpen}
         />
         <div style={{height: '4em'}} />
         {this.state.output.length > 0 ? 
@@ -86,25 +95,16 @@ class App extends Component {
           open={this.state.sidePanelOpen}
           onRequestChange={(open) => this.setState({sidePanelOpen: open})}
         >
-        <div style={{padding: '1em'}}>
-          <div style={{textAlign: 'center'}}>
-            <Avatar src="MathTermLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '20%'}}/>
-            <h3>MathTerm.io</h3>
-            <p>Written by Gabe Pearhill</p>
-            <a className="github-button" href="https://github.com/pearman/mathterm.io" data-icon="octicon-star" data-style="mega" data-count-href="/pearman/mathterm.io/stargazers" data-count-api="/repos/pearman/mathterm.io#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star pearman/mathterm.io on GitHub">Star</a>
-            <br />
-            <a className="github-button" href="https://github.com/pearman/mathterm.io/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/pearman/mathterm.io#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue pearman/mathterm.io on GitHub">Issue</a>
-          </div>
-          <br />
-          <Divider />
-          <br />
-          <div style={{textAlign: 'center'}}>
-            <p>Powered by the following Open Source technologies:</p>
-            <Avatar src="algebriteLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '0%'}}/>
-            <Avatar src="MathJaxLogo.png" size={100} backgroundColor={'rgba(1,1,1,0)'} style={{borderRadius: '0%'}}/>
-          </div>
-        </div>
+          <SidePanel />
         </Drawer>
+        <Dialog
+          title="Help"
+          modal={false}
+          open={this.state.helpOpen}
+          onRequestClose={this.handleHelpClose}
+        >
+          <Help />
+        </Dialog>
       </div>
     );
   }
